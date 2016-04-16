@@ -1,0 +1,191 @@
+#include <stdio.h>
+#include <windows.h>
+#include <stdlib.h>
+#include <time.h>
+#include <conio.h>
+ 
+ 
+int  gotoxy(int x,int y){
+HANDLE consola;
+consola=GetStdHandle(STD_OUTPUT_HANDLE);
+ 
+COORD posicion;
+posicion.X=x;
+posicion.Y=y;
+ 
+SetConsoleCursorPosition(consola,posicion);
+ 
+}
+ 
+void llenar_mapa(int mapa[50][80]);
+void simular_descenso(int mapa[50][80]);
+void imprimir(int mapa[50][80]);
+void actualizar(int mapa[50][80],int linea[79]);
+void mapitaskappa(int linea[79],int inicio);
+ 
+int main (){
+    int cont=39;
+ 
+    int i,inicio=1,aleatorio,var,j,a=2;
+    int mapa[50][80];
+    int linea_nueva[79];
+     llenar_mapa(mapa);
+     imprimir(mapa);
+     printf("\n\t presione una tecla y presione enter para iniciar");
+     getchar();
+     system("CLS");
+ 
+     do{
+       
+         printf("%dbaia:",inicio);
+         srand(time (NULL));
+         aleatorio=1+rand()%24;
+        mapitaskappa(linea_nueva,inicio);
+     
+        simular_descenso(mapa);
+        actualizar(mapa,linea_nueva);
+        gotoxy(60,0);
+        imprimir(mapa);
+ 
+       if (inicio>=1 && inicio<aleatorio)
+       inicio++;
+       else
+       inicio--;
+         Sleep(0);
+     
+     }
+     while(cont>=0);
+ 
+ 
+}
+void llenar_mapa(int mapa[50][80]){
+   
+   
+    int i,j;
+    int q=1;
+    int p;
+    for(i=0;i<50;i++)
+    {
+   
+    for(j=0;j<80;j++){
+     mapa[i][j]=0;
+     
+     if(q==1 && (j==0 || j==79))
+     {mapa[i][0]=1;
+     mapa[i][79]=1;
+     p=1;}
+     
+     if(q==2 && (j==0 || j==79))
+     {mapa[i][0]=2;
+     mapa[i][79]=2;
+     p=2;}
+     
+    }
+     if(p==1) {q=2;}
+     if(p==2) {q=1;}
+    }
+       
+   // ^ =7
+  // /V\\ =8-9-5
+ //º<-^->º =6-77-44-0-22-11-66
+     
+                                                                            mapa[45][40]=7;
+                                                            mapa[46][39]=8; mapa[46][40]=9; mapa[46][41]=5;
+                mapa[47][36]=6;mapa[47][37]=77;mapa[47][38]=44;;mapa[47][40]=88;mapa[47][42]=22;mapa[47][43]=11;mapa[47][44]=66;
+                                                                           
+                                                             
+   
+}
+void simular_descenso(int mapa [50][80]){
+      int i,a=49,r=1,w=50,j,p,o;
+    if(mapa[0][0]==1) o=1;
+    if(mapa[0][0]==2) o=0;
+   
+    for(i=0;i<49;i++)
+    {
+    a=a-1;
+   
+    for(j=0;j<80;j++){
+     
+     if(mapa[i][j]==1 && o==1){ mapa[i][j]=2; p=0; }
+   
+     if(mapa[i][j]==2 && o==0) {mapa[i][j]=1; p=1; }
+     
+     if(mapa[a][j]==4 ) {mapa[a][j]=0; mapa[a+1][j]=4; }
+}
+ 
+    if(p==0){o=0;}
+    if(p==1){o=1;}
+    }
+   
+   
+     
+}
+void imprimir(int mapa[50][80]){
+int i,j;  
+   
+    for(i=0;i<49;i++)
+    {
+    printf("\n\t\t");
+    for(j=0;j<80;j++){
+     if(mapa[i][j]==0)
+     {printf(" ");}
+     if (mapa[i][j]==1)
+     {printf("*");}
+     if(mapa[i][j]==2)
+     printf("/");
+     if (mapa[i][j]==4)
+     printf("$");
+    if (mapa[i][j]==7)
+     printf("^");
+      if (mapa[i][j]==8)
+     printf("/");
+      if (mapa[i][j]==9)
+     printf("V");
+      if (mapa[i][j]==5)
+     printf("\\");
+      if (mapa[i][j]==6)
+     printf("º");
+      if (mapa[i][j]==77)
+     printf("<");
+      if (mapa[i][j]==44)
+     printf("-");
+      if (mapa[i][j]==3)
+     printf("=");
+      if (mapa[i][j]==88)
+     printf("^");
+      if (mapa[i][j]==3)
+     printf("=");
+      if (mapa[i][j]==22)
+     printf("-");
+      if (mapa[i][j]==11)
+     printf(">");
+      if (mapa[i][j]==66)
+     printf("º");
+ 
+    }
+    }
+   
+}
+void actualizar(int mapa[50][80],int linea[79]){
+    int j;
+   
+        for(j=1;j<79;j++){
+            mapa[0][j]=linea[j];
+       
+        }
+   
+ 
+}
+void mapitaskappa(int linea[79],int inicio){
+    int b,i;
+     for (i=0;i<79;i++)
+     linea[i]=0;
+ 
+    for(i=1;i<=inicio;i++)
+    {linea[i]=4;}
+    b=79-inicio;
+    for(i=b;i<79;i++){
+        linea[i]=4;
+    }
+}
