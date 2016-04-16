@@ -22,11 +22,13 @@ void simular_descenso(int mapa[50][80]);
 void imprimir(int mapa[50][80]);
 void actualizar(int mapa[50][80],int linea[79]);
 void mapitaskappa(int linea[79],int inicio);
+void mover(char mov,int mapa[50][80],int *fi,int *co);
  
 int main (){
     int cont=39;
  
-    int i,inicio=1,aleatorio,var,j,a=2;
+    int i,inicio=1,aleatorio,var,fi=46,co=40,j,a=2,pts=0;
+    char mov;
     int mapa[50][80];
     int linea_nueva[79];
      llenar_mapa(mapa);
@@ -36,8 +38,11 @@ int main (){
      system("CLS");
  
      do{
-       
-         printf("%dbaia:",inicio);
+     	pts=pts+1;
+     	if(_kbhit())
+     	{ mov=getch();}
+       mover(mov,mapa,&fi,&co);		
+       mov='l';
          srand(time (NULL));
          aleatorio=1+rand()%24;
         mapitaskappa(linea_nueva,inicio);
@@ -46,7 +51,8 @@ int main (){
         actualizar(mapa,linea_nueva);
         gotoxy(60,0);
         imprimir(mapa);
- 
+        gotoxy(1,0);
+        printf("puntuacion= %d",pts);
        if (inicio>=1 && inicio<aleatorio)
        inicio++;
        else
@@ -91,7 +97,7 @@ void llenar_mapa(int mapa[50][80]){
      
                                                                             mapa[45][40]=7;
                                                             mapa[46][39]=8; mapa[46][40]=9; mapa[46][41]=5;
-                mapa[47][36]=6;mapa[47][37]=77;mapa[47][38]=44;;mapa[47][40]=88;mapa[47][42]=22;mapa[47][43]=11;mapa[47][44]=66;
+                             mapa[47][37]=6;mapa[47][38]=77;mapa[47][39]=44;mapa[47][40]=88;mapa[47][41]=22;mapa[47][42]=11;mapa[47][43]=66;
                                                                            
                                                              
    
@@ -189,3 +195,88 @@ void mapitaskappa(int linea[79],int inicio){
         linea[i]=4;
     }
 }
+void mover(char mov,int mapa[50][80],int *fi,int *co){
+	 if(mov=='w')					
+				{
+				mapa[*fi-2][*co]=7;
+			    mapa[*fi-1][*co]=9;
+				mapa[*fi-1][*co+1]=5;
+			    mapa[*fi-1][*co-1]=8;
+			    mapa[*fi][*co]=88;
+				mapa[*fi][*co+1]=22;
+				 mapa[*fi][*co-1]=44;
+				mapa[*fi][*co+2]=11;
+				 mapa[*fi][*co-2]=77;
+				 mapa[*fi][*co+3]=66;
+				 mapa[*fi][*co-3]=6;
+				 mapa[*fi+1][*co]=0;
+				  mapa[*fi+1][*co+1]=0;
+				 mapa[*fi+1][*co-1]=0;
+				  mapa[*fi+1][*co+2]=0;
+				 mapa[*fi+1][*co-2]=0;
+				  mapa[*fi+1][*co+3]=0;
+				 mapa[*fi+1][*co-3]=0;
+				 *fi=*fi-1;
+				
+				}
+		
+				if (mov=='s' ){
+			     
+				 mapa[*fi+2][*co]=88;
+			     mapa[*fi+2][*co+1]=22;
+			     mapa[*fi+2][*co+2]=11;
+			     mapa[*fi+2][*co+3]=66;
+			     mapa[*fi+2][*co-1]=44;
+			     mapa[*fi+2][*co-2]=77;
+			     mapa[*fi+2][*co-3]=6;
+			     mapa[*fi+2][*co]=88;
+			     mapa[*fi+1][*co]=9;
+			     mapa[*fi+1][*co+1]=5;
+			     mapa[*fi+1][*co-1]=8;
+			     mapa[*fi][*co]=7;
+			     mapa[*fi-1][*co]=0;
+			     mapa[*fi][*co+1]=0;
+			     mapa[*fi][*co-1]=0;
+			     mapa[*fi+1][*co+3]=0;
+			     mapa[*fi+1][*co+2]=0;
+			     mapa[*fi+1][*co-3]=0;
+			     mapa[*fi+1][*co-2]=0;
+				*fi=*fi+1;
+				}
+		
+				if (mov=='d'){
+				mapa[*fi-1][*co+1]=7;
+				mapa[*fi][*co+2]=5;
+				mapa[*fi][*co+1]=9;
+				mapa[*fi][*co]=8;
+				mapa[*fi+1][*co+4]=66;
+				mapa[*fi+1][*co+3]=11;
+				mapa[*fi+1][*co+2]=22;
+				mapa[*fi+1][*co+1]=88;
+				mapa[*fi+1][*co]=44;
+				mapa[*fi+1][*co-1]=77;
+				mapa[*fi+1][*co-2]=6;
+				mapa[*fi-1][*co]=0;
+				mapa[*fi][*co-1]=0;
+				mapa[*fi+1][*co-3]=0;	
+				*co=*co+1;
+				}
+		
+				if (mov=='a'){
+				mapa[*fi-1][*co-1]=7;
+				mapa[*fi][*co-2]=8;
+				mapa[*fi][*co-1]=9;
+				mapa[*fi][*co]=5;
+				mapa[*fi+1][*co-4]=6;
+				mapa[*fi+1][*co-3]=77;
+				mapa[*fi+1][*co-2]=44;
+				mapa[*fi+1][*co-1]=88;
+				mapa[*fi+1][*co]=22;
+				mapa[*fi+1][*co+1]=11;
+				mapa[*fi+1][*co+2]=66;
+				mapa[*fi-1][*co]=0;
+				mapa[*fi][*co+1]=0;
+				mapa[*fi+1][*co+3]=0;	
+				*co=*co-1;
+				}
+	       }
